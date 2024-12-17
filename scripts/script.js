@@ -36,33 +36,42 @@ async function getBestMoviesByGenre(genre) {
     try {
         let genreUrl = URL + "?sort_by=-imdb_score&genre=" + genre;
         let allMovies = [];
-            const response = await fetch(genreUrl);
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
+        const response = await fetch(genreUrl);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const movies = await response.json();
+        let ids = [];
+        for (let i = 0; i < movies["results"].length; i++) {
+            if (!movies["results"] || movies["results"].length === 0) {
+                throw new Error("No movies found.");
             }
-            const movies = await response.json();
-            let ids = [];
-            for (let i = 0; i < movies["results"].length; i++) {
-                if (!movies["results"] || movies["results"].length === 0) {
-                    throw new Error("No movies found.");
-                }
-                if (i > movies["results"].length) break;
-                ids.push(movies["results"][i]["id"]);
-            }
+            if (i > movies["results"].length) break;
+            ids.push(movies["results"][i]["id"]);
+        }
 
-            const allMoviesPromise = Promise.all(ids.map(async (id) => {
-                return await getMovie(id);
-            }))
-            allMoviesPromise.then(
-                (movies) => {
-                    movies.forEach(movie => {
-                        allMovies.push(movie);
-                    })
-                }
-            )
-
-        if (!movies["next"]) return;
-
+        await Promise.all(ids.map(async (id) => {
+            let movie = await getMovie(id);
+            allMovies.push(movie);
+        }))
+        // allMoviesPromise.then(
+        //     (movies) => {
+        //         movies.forEach(movie => {
+        //             allMovies.push(movie);
+        //         });
+        //
+        //         if (!movies["next"]) {
+        //             return allMovies;
+        //         }
+        //     }
+        // )
+        //     .catch(
+        //         (error) => {
+        //             console.error(error.message);
+        //         })
+        if (!movies["next"]) {
+            return allMovies;
+        }
         const nextPageReponse = await fetch(movies["next"]);
         if (!nextPageReponse.ok) {
             throw new Error(`Response status: ${nextPageReponse.status}`);
@@ -101,7 +110,7 @@ async function getAllCategories() {
         let allGenres = [];
         while (genreUrl) {
             const response = await fetch(genreUrl);
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
             const categories = await response.json();
@@ -121,9 +130,9 @@ async function getAllCategories() {
 async function displayMoviesByGenre(genre) {
     let movies = await getBestMoviesByGenre(genre);
     movies.forEach((movie) => {
-       let movieDiv = createMovieDiv(movie);
-       let id = `#${genre.toLowerCase()}-grid`
-       document.querySelector(id).appendChild(movieDiv);
+        let movieDiv = createMovieDiv(movie);
+        let id = `#${genre.toLowerCase()}-grid`
+        document.querySelector(id).appendChild(movieDiv);
     });
 
 }
@@ -131,8 +140,9 @@ async function displayMoviesByGenre(genre) {
 async function populateSelect() {
     const allGenres = await getAllCategories();
     let select = document.getElementById("movie-category-select")
-    select.addEventListener("change", changeMoviesFromSelect)
+    select.addEventListener("change", onChangeMoviesFromSelect)
     let selectTwo = document.getElementById("movie-category-select2")
+    selectTwo.addEventListener("change", onChangeMoviesFromSelect)
     allGenres.forEach(
         (genre) => {
             const option = document.createElement("option");
@@ -146,13 +156,34 @@ async function populateSelect() {
             selectTwo.appendChild(optionTwo);
         }
     )
+    select.value = "adult";
+    await changeMoviesFromSelect("adult", select);
+    selectTwo.value = "adventure";
+    await changeMoviesFromSelect("adventure", selectTwo);
 }
 
-async function changeMoviesFromSelect(event) {
+async function onChangeMoviesFromSelect(event) {
     let genre = event.target.value;
+    await changeMoviesFromSelect(genre, event.target);
+}
 
-    let firstSelection = document.getElementById("first-selection");
-    let movieContainers = firstSelection.getElementsByClassName("movie-container");
+async function changeMoviesFromSelect(genre, target) {
+    let movies = await getBestMoviesByGenre(genre);
+    let section = target.parentElement;
+    let movieContainers = section.querySelectorAll(".movie-container");
+    for (let i = 0; i < movieContainers.length; i++) {
+        if (movies[i]) {
+            movieContainers[i].querySelector("h2").innerText = movies[i]["original_title"];
+            let image = movieContainers[i].querySelector("img");
+            image.src = movies[i]["image_url"];
+            image.onerror = () => {
+                image.src = "images/no-image.jpg";
+            }
+            movieContainers[i].style.display = "inline-block";
+        } else {
+            movieContainers[i].style.display = "none";
+        }
+    }
 }
 
 async function displayBestMovie() {
