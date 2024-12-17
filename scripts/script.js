@@ -98,7 +98,7 @@ function createMovieDiv(movie) {
             <img src="${movie["image_url"]}" alt="${movie["original_title"]}" onerror="this.oneerror=null; this.src='images/no-image.jpg'"/>
             <div class="movie-details">
                 <h2>${movie["original_title"]}</h2>
-                <button type="button">Détails</button>
+                <button type="button" onclick="displayPopup()">Détails</button>
             </div>
     `;
     return movieDiv;
@@ -196,6 +196,8 @@ async function displayBestMovie() {
     await displayMoviesByGenre("Action");
     await displayMoviesByGenre("Thriller");
     await populateSelect();
+    initClosePopupEventListener();
+    displayPopup();
 }
 
 document.addEventListener("DOMContentLoaded", displayBestMovie);

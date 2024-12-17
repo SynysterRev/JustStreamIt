@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <link href="style/output.css" rel="stylesheet">
     <script src="scripts/script.js" defer></script>
+    <script src="scripts/popup.js" defer></script>
     <title>JustStreamIt</title>
 </head>
 <body class="mx-24">
@@ -166,6 +167,31 @@
         </div>
     </section>
 </main>
+
+<div class="popup-background">
+    <div id="popup" class="popup">
+        <section class="flex flex-row relative justify-between">
+            <div id="movie-info"  class="place-self-start">
+                <h2 id="movie-title" class="text-4xl font-bold pt-1">Le gros chimpanzé</h2>
+                <p id="movie-date">date - genres</p>
+                <p id="movie-pegi">pegi - duration(pays?)</p>
+                <p id="movie-score">IMDB score: score</p></br>
+                <p><strong>Réalisé par: </strong></p>
+                <p id="movie-real">Réalisateur</p>
+            </div>
+            <img src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
+                 alt="movie cover">
+        </section>
+        <section class="mt-6 place-self-start">
+            <p id="movie-description">When the dude lebowski is mistalen for a millionaire leboskwi, two thugs
+                urinate on his rug to coerce him into payiong a debt he knows </p>
+            <p class="mt-10"><strong>Avec:</strong></p>
+            <p id="movie-actors">All actors</p>
+        </section>
+        <button id="close-popup"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-32 rounded-full place-self-center mt-10">Fermer
+        </button>
+    </div>
+</div>
 </body>
 </html>
-<!-- Ceci est un commentaire -->
