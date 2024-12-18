@@ -1,5 +1,8 @@
 const URL = "http://localhost:8000/api/v1/titles/";
 
+let buttons = [];
+let buttonIds = [];
+
 async function getBestMovie() {
     try {
         const response = await fetch(URL + "?sort_by=-imdb_score");
@@ -54,21 +57,7 @@ async function getBestMoviesByGenre(genre) {
             let movie = await getMovie(id);
             allMovies.push(movie);
         }))
-        // allMoviesPromise.then(
-        //     (movies) => {
-        //         movies.forEach(movie => {
-        //             allMovies.push(movie);
-        //         });
-        //
-        //         if (!movies["next"]) {
-        //             return allMovies;
-        //         }
-        //     }
-        // )
-        //     .catch(
-        //         (error) => {
-        //             console.error(error.message);
-        //         })
+
         if (!movies["next"]) {
             return allMovies;
         }
@@ -98,9 +87,12 @@ function createMovieDiv(movie) {
             <img src="${movie["image_url"]}" alt="${movie["original_title"]}" onerror="this.oneerror=null; this.src='images/no-image.jpg'"/>
             <div class="movie-details">
                 <h2>${movie["original_title"]}</h2>
-                <button type="button" onclick="displayPopup()">Détails</button>
+                <button type="button">Détails</button>
             </div>
     `;
+    let button = movieDiv.querySelector("button");
+    buttons.push(button);
+    buttonIds.push(movie["id"]);
     return movieDiv;
 }
 
@@ -180,6 +172,9 @@ async function changeMoviesFromSelect(genre, target) {
                 image.src = "images/no-image.jpg";
             }
             movieContainers[i].style.display = "inline-block";
+            let button = movieContainers[i].querySelector("button");
+            buttons.push(button);
+            buttonIds.push(movies[i]["id"]);
         } else {
             movieContainers[i].style.display = "none";
         }
@@ -192,12 +187,29 @@ async function displayBestMovie() {
     movieDiv.getElementsByTagName("h1")[0].innerText = bestMovie["original_title"];
     movieDiv.getElementsByTagName("img")[0].src = bestMovie["image_url"];
     movieDiv.getElementsByTagName("article")[0].innerText = bestMovie["long_description"];
+    let button = movieDiv.querySelector("button");
+    buttons.push(button);
+    buttonIds.push(bestMovie["id"]);
+}
+
+async function loadMovies() {
+    await displayBestMovie();
     await displayMoviesByGenre("Mystery");
     await displayMoviesByGenre("Action");
     await displayMoviesByGenre("Thriller");
     await populateSelect();
+    let cpt = 0;
+    buttons.forEach((button) => {
+        let movieId = buttonIds[cpt];
+        if (button.id !== "close-popup")
+            button.addEventListener("click", () => displayPopup(movieId));
+        cpt++;
+    })
+    // document.querySelectorAll("button").forEach((button) => {
+    //     if (button.id !== "close-popup")
+    //         button.addEventListener("click", displayPopup);
+    // });
     initClosePopupEventListener();
-    displayPopup();
 }
 
-document.addEventListener("DOMContentLoaded", displayBestMovie);
+document.addEventListener("DOMContentLoaded", loadMovies);
