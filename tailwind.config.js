@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html"],
-  safelist: ["button-more", "force-display"],
+  content: ["./index.html", "./scripts/popup.js", "./scripts/script.js"],
+
   theme: {
     extend: {
       colors: {

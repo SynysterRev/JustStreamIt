@@ -1,8 +1,5 @@
 const URL = "http://localhost:8000/api/v1/titles/";
 
-let buttons = [];
-let buttonIds = [];
-
 async function getBestMovie() {
     try {
         const response = await fetch(URL + "?sort_by=-imdb_score");
@@ -61,11 +58,11 @@ async function getBestMoviesByGenre(genre) {
         if (!movies["next"]) {
             return allMovies;
         }
-        const nextPageReponse = await fetch(movies["next"]);
-        if (!nextPageReponse.ok) {
-            throw new Error(`Response status: ${nextPageReponse.status}`);
+        const nextPageResponse = await fetch(movies["next"]);
+        if (!nextPageResponse.ok) {
+            throw new Error(`Response status: ${nextPageResponse.status}`);
         }
-        const nextPage = await nextPageReponse.json();
+        const nextPage = await nextPageResponse.json();
 
         if (!nextPage["results"] || nextPage["results"].length === 0) {
             throw new Error("No movies found.");
@@ -83,16 +80,28 @@ async function getBestMoviesByGenre(genre) {
 function createMovieDiv(movie) {
     let movieDiv = document.createElement("div");
     movieDiv.classList.add("movie-container");
-    movieDiv.innerHTML = `
+    if (movie) {
+        movieDiv.innerHTML = `
             <img src="${movie["image_url"]}" alt="${movie["original_title"]}" onerror="this.oneerror=null; this.src='images/no-image.jpg'"/>
             <div class="movie-details">
                 <h2>${movie["original_title"]}</h2>
                 <button type="button">Détails</button>
             </div>
     `;
+    } else {
+        movieDiv.classList.add("hidden-important");
+        movieDiv.innerHTML = `
+            <img src="" alt="" onerror="this.oneerror=null; this.src='images/no-image.jpg'"/>
+            <div class="movie-details">
+                <h2></h2>
+                <button type="button">Détails</button>
+            </div>
+    `;
+    }
     let button = movieDiv.querySelector("button");
-    buttons.push(button);
-    buttonIds.push(movie["id"]);
+    let movieId = movie ? movie["id"] : -1;
+    button.addEventListener("click", () => displayPopup(movieId));
+
     return movieDiv;
 }
 
@@ -138,7 +147,6 @@ function addMoreButton(parent) {
     moreButton.type = "button";
     moreButton.innerText = "Voir plus";
     moreButton.addEventListener("click", displayMoreOrLessMovies);
-    moreButton.id = "more-button";
     parent.appendChild(moreButton);
 }
 
@@ -178,13 +186,12 @@ async function changeMoviesFromSelect(genre, target) {
     let movieContainers = section.querySelectorAll(".movie-container");
     if (movieContainers.length === 0) {
         let grid = section.querySelector(".movie-grid");
-        movies.forEach((movie) => {
-            let movieDiv = createMovieDiv(movie);
+        for (let i = 0; i < 6; ++i) {
+            let movieDiv = createMovieDiv(movies[i] ?? null);
             grid.appendChild(movieDiv);
-        });
+        }
         addMoreButton(section);
-    }
-    else {
+    } else {
         for (let i = 0; i < movieContainers.length; i++) {
             if (movies[i]) {
                 movieContainers[i].querySelector("h2").innerText = movies[i]["original_title"];
@@ -193,27 +200,41 @@ async function changeMoviesFromSelect(genre, target) {
                 image.onerror = () => {
                     image.src = "images/no-image.jpg";
                 }
-                if (movieContainers[i].classList.contains("hidden"))
-                    movieContainers[i].classList.remove("hidden");
+                if (movieContainers[i].classList.contains("hidden-important"))
+                    movieContainers[i].classList.remove("hidden-important");
                 let button = movieContainers[i].querySelector("button");
-                buttons.push(button);
-                buttonIds.push(movies[i]["id"]);
+                button.replaceWith(button.cloneNode(true));
+                button = movieContainers[i].querySelector("button");
+                button.addEventListener("click", () => displayPopup(movies[i]["id"]));
             } else {
-                movieContainers[i].classList.add("hidden");
+                movieContainers[i].classList.add("hidden-important");
             }
         }
+    }
+    // Hide "more button" if there is fewer movies than maximum displayed at the time
+    let btn = section.querySelector(".button-more");
+    let numberDisplayedMovies = matchMedia("(max-width: 640px)").matches ? 2 : matchMedia("(max-width: 1024px)").matches ? 4 : 6;
+    if (movies.length <= numberDisplayedMovies) {
+        btn.classList.add("hidden-important");
+    } else
+    {
+        if(btn.classList.contains("hidden-important"))
+            btn.classList.remove("hidden-important");
     }
 }
 
 async function displayBestMovie() {
     let bestMovie = await getBestMovie();
     let movieDiv = document.querySelector("#best-movie");
-    movieDiv.getElementsByTagName("h1")[0].innerText = bestMovie["original_title"];
-    movieDiv.getElementsByTagName("img")[0].src = bestMovie["image_url"];
-    movieDiv.getElementsByTagName("article")[0].innerText = bestMovie["long_description"];
+    movieDiv.querySelector("h1").innerText = bestMovie["original_title"];
+    let image =  movieDiv.querySelector("img");
+    image.src = bestMovie["image_url"];
+    image.onerror = () => {
+        image.src = "images/no-image.jpg";
+    }
+    movieDiv.querySelector("article").innerText = bestMovie["long_description"];
     let button = movieDiv.querySelector("button");
-    buttons.push(button);
-    buttonIds.push(bestMovie["id"]);
+    button.addEventListener("click", () => displayPopup(bestMovie["id"]));
 }
 
 function displayMoreOrLessMovies(event) {
@@ -231,13 +252,6 @@ async function loadMovies() {
     await displayMoviesByGenre("Action");
     await displayMoviesByGenre("Thriller");
     await populateSelect();
-    let cpt = 0;
-    buttons.forEach((button) => {
-        let movieId = buttonIds[cpt];
-        if (button.id !== "close-popup")
-            button.addEventListener("click", () => displayPopup(movieId));
-        cpt++;
-    })
     initClosePopupEventListener();
 }
 
