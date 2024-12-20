@@ -1,8 +1,10 @@
 async function displayPopup(movieId){
     let popup = document.querySelector("#popup-background");
     popup.classList.toggle("hidden");
-    let movie = await getMovie(movieId);
+    let body = document.querySelector("body");
+    body.classList.toggle("overflow-hidden");
 
+    let movie = await getMovie(movieId);
     popup.querySelector("#movie-title").innerText = movie["original_title"];
     popup.querySelector("#movie-description").innerText = movie["long_description"];
     let images = popup.querySelectorAll("img");
@@ -40,6 +42,8 @@ async function displayPopup(movieId){
 function hidePopup(){
     let popup = document.querySelector("#popup-background");
     popup.classList.toggle("hidden");
+    let body = document.querySelector("body");
+    body.classList.toggle("overflow-hidden");
 }
 
 function initClosePopupEventListener() {
