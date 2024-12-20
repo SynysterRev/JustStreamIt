@@ -1,10 +1,11 @@
 async function displayPopup(movieId){
+    let movie = await getMovie(movieId);
+
     let popup = document.querySelector("#popup-background");
     popup.classList.toggle("hidden");
     let body = document.querySelector("body");
     body.classList.toggle("overflow-hidden");
 
-    let movie = await getMovie(movieId);
     popup.querySelector("#movie-title").innerText = movie["original_title"];
     popup.querySelector("#movie-description").innerText = movie["long_description"];
     let images = popup.querySelectorAll("img");
@@ -29,6 +30,10 @@ async function displayPopup(movieId){
 
     let movieScore = popup.querySelector("#movie-score");
     movieScore.innerText = "IMDB score: " + movie["imdb_score"] + "/10";
+
+    let movieRevenue = popup.querySelector("#movie-revenue");
+    let revenue = movie["worldwide_gross_income"];
+    movieRevenue.innerText = (revenue !== null) ? "Revenue : " + movie["worldwide_gross_income"] : "";
 
     let movieReal = popup.querySelector("#movie-real");
     movieReal.innerText = movie["directors"].toString().replaceAll(",", ", ");
