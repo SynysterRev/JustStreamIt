@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="style/output.css" rel="stylesheet">
     <script src="scripts/script.js" defer></script>
     <script src="scripts/popup.js" defer></script>
     <title>JustStreamIt</title>
 </head>
-<body class="mx-24">
-<header class="bg-[#61787f] flex flex-row justify-left items-center mt-14">
+<body class="sm:mx-24 mx-12">
+<header class="bg-[#61787f] flex flex-row place-content-center sm:place-content-start items-center mt-14">
     <img src="images/title.png" alt="site logo"/>
-    <h2 class="text-3xl text-white">Vidéos à la demande</h2>
+    <h2 class="text-3xl text-white hidden sm:block">Vidéos à la demande</h2>
 </header>
 <main>
     <section>
-        <h1>Meilleur film</h1>
-        <div id="best-movie" class="border-4 border-black p-4 flex flex-row relative">
+        <h1 class="sm:text-left text-center">Meilleur film</h1>
+        <div id="best-movie" class="border-4 border-black p-4 flex sm:flex-row flex-col relative">
             <img src=""
                  alt="Best movie cover"/>
-            <div class="flex flex-col ml-8">
+            <div class="flex flex-col sm:ml-8">
                 <h1 class="pb-4 my-0"></h1>
                 <article>
                 </article>
                 <button
-                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-24 rounded-full absolute bottom-4 right-4"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-24 rounded-full sm:absolute
+                        sm:bottom-4 sm:right-4 self-center mt-4"
                         type="button">Détails
                 </button>
             </div>
         </div>
     </section>
-    <section>
+    <section id="mystery" class="flex flex-col">
         <h1>Mystery</h1>
         <div id="mystery-grid" class="movie-grid">
         </div>
     </section>
-    <section>
+    <section id="action" class="flex flex-col">
         <h1>Action</h1>
         <div id="action-grid" class="movie-grid">
         </div>
     </section>
-    <section>
+    <section id="thriller" class="flex flex-col">
         <h1>Thriller</h1>
         <div id="thriller-grid" class="movie-grid">
         </div>
     </section>
-    <section id="first-selection">
+    <section id="first-selection" class="flex flex-col">
         <label for="movie-category-select">Autres:</label>
         <select name="movie-category" id="movie-category-select">
         </select>
@@ -105,74 +106,77 @@
             </div>
         </div>
     </section>
-    <section id="second-selection">
+    <section id="second-selection" class="flex flex-col mt-10">
         <label for="movie-category-select2">Autres:</label>
         <select name="movie-category2" id="movie-category-select2">
         </select>
         <div class="movie-grid">
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
-            <div class="movie-container">
-                <img
-                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                        alt="First movie cover"/>
-                <div class="movie-details">
-                    <h2>Titanic</h2>
-                    <button type="button">Détails</button>
-                </div>
-            </div>
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="movie-container">-->
+<!--                <img-->
+<!--                        src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"-->
+<!--                        alt="First movie cover"/>-->
+<!--                <div class="movie-details">-->
+<!--                    <h2>Titanic</h2>-->
+<!--                    <button type="button">Détails</button>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </section>
 </main>
 
-<div class="popup-background">
-    <div id="popup" class="popup">
-        <section class="flex flex-row relative justify-between">
-            <div id="movie-info"  class="place-self-start">
-                <h2 id="movie-title" class="text-4xl font-bold pt-1">Le gros chimpanzé</h2>
+<div
+       id="popup-background"
+       class="hidden flex justify-center items-center fixed w-full h-full top-0 left-0 bg-black bg-opacity-70 z-50">
+    <div id="popup"
+         class="flex flex-col w-4/5 md:w-3/5 lg:w-2/5 h-4/5 lg:h-max lg:max-h-3/5 overflow-scroll p-4 bg-white text-align-left border-4 border-black rounded-lg relative">
+        <section class="flex flex-col lg:flex-row relative justify-between">
+            <div id="movie-info" class="place-self-start">
+                <h2 id="movie-title" class="text-3xl lg:text-4xl font-bold pt-1">Le gros chimpanzé</h2>
                 <p id="movie-date" class="font-bold text-lg">date - genres</p>
                 <p id="movie-pegi" class="font-bold text-lg">pegi - duration(pays?)</p>
                 <p id="movie-score" class="font-bold text-lg">IMDB score: score</p></br>
@@ -180,16 +184,22 @@
                 <p id="movie-real">Réalisateur</p>
             </div>
             <img src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
-                 alt="movie cover">
+                 alt="movie cover" class="hidden lg:block">
         </section>
-        <section class="mt-6 place-self-start">
+        <section class="mt-6 items-center">
             <p id="movie-description">When the dude lebowski is mistalen for a millionaire leboskwi, two thugs
                 urinate on his rug to coerce him into payiong a debt he knows </p>
+            <img src="https://fastly.picsum.photos/id/409/400/400.jpg?hmac=wTpk94QN2lEwMS0IcP22wbN_24dSYIUJcCDUSpTpNzQ"
+                 alt="movie cover" class="block lg:hidden mt-6 place-self-center">
             <p class="mt-10"><strong>Avec:</strong></p>
             <p id="movie-actors">All actors</p>
         </section>
-        <button id="close-popup"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-32 rounded-full place-self-center mt-10">Fermer
+        <button
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-32 rounded-full place-self-center mt-10 hidden lg:block">
+            Fermer
+        </button>
+        <button
+                class="bg-[url('../images/close.png')] bg-contain size-8 top-0 right-0 absolute mt-4 mr-4 lg:hidden">
         </button>
     </div>
 </div>

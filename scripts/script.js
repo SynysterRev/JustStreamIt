@@ -121,12 +121,25 @@ async function getAllCategories() {
 
 async function displayMoviesByGenre(genre) {
     let movies = await getBestMoviesByGenre(genre);
+    let genreID = `#${genre.toLowerCase()}`;
+    let id = `${genreID}-grid`;
+    let grid = document.querySelector(id);
     movies.forEach((movie) => {
         let movieDiv = createMovieDiv(movie);
-        let id = `#${genre.toLowerCase()}-grid`
-        document.querySelector(id).appendChild(movieDiv);
+        grid.appendChild(movieDiv);
     });
+    let buttonParent = document.querySelector(genreID);
+    addMoreButton(buttonParent);
+}
 
+function addMoreButton(parent) {
+    let moreButton = document.createElement("button");
+    moreButton.classList.add("button-more");
+    moreButton.type = "button";
+    moreButton.innerText = "Voir plus";
+    moreButton.addEventListener("click", displayMoreOrLessMovies);
+    moreButton.id = "more-button";
+    parent.appendChild(moreButton);
 }
 
 async function populateSelect() {
@@ -163,20 +176,31 @@ async function changeMoviesFromSelect(genre, target) {
     let movies = await getBestMoviesByGenre(genre);
     let section = target.parentElement;
     let movieContainers = section.querySelectorAll(".movie-container");
-    for (let i = 0; i < movieContainers.length; i++) {
-        if (movies[i]) {
-            movieContainers[i].querySelector("h2").innerText = movies[i]["original_title"];
-            let image = movieContainers[i].querySelector("img");
-            image.src = movies[i]["image_url"];
-            image.onerror = () => {
-                image.src = "images/no-image.jpg";
+    if (movieContainers.length === 0) {
+        let grid = section.querySelector(".movie-grid");
+        movies.forEach((movie) => {
+            let movieDiv = createMovieDiv(movie);
+            grid.appendChild(movieDiv);
+        });
+        addMoreButton(section);
+    }
+    else {
+        for (let i = 0; i < movieContainers.length; i++) {
+            if (movies[i]) {
+                movieContainers[i].querySelector("h2").innerText = movies[i]["original_title"];
+                let image = movieContainers[i].querySelector("img");
+                image.src = movies[i]["image_url"];
+                image.onerror = () => {
+                    image.src = "images/no-image.jpg";
+                }
+                if (movieContainers[i].classList.contains("hidden"))
+                    movieContainers[i].classList.remove("hidden");
+                let button = movieContainers[i].querySelector("button");
+                buttons.push(button);
+                buttonIds.push(movies[i]["id"]);
+            } else {
+                movieContainers[i].classList.add("hidden");
             }
-            movieContainers[i].style.display = "inline-block";
-            let button = movieContainers[i].querySelector("button");
-            buttons.push(button);
-            buttonIds.push(movies[i]["id"]);
-        } else {
-            movieContainers[i].style.display = "none";
         }
     }
 }
@@ -192,6 +216,15 @@ async function displayBestMovie() {
     buttonIds.push(bestMovie["id"]);
 }
 
+function displayMoreOrLessMovies(event) {
+    let grid = event.target.parentElement;
+    let containers = grid.querySelectorAll(".movie-container");
+    for (let i = 0; i < containers.length; i++) {
+        containers[i].classList.toggle("force-display");
+    }
+    event.target.innerText = event.target.innerText === "Voir plus" ? "Voir moins" : "Voir plus";
+}
+
 async function loadMovies() {
     await displayBestMovie();
     await displayMoviesByGenre("Mystery");
@@ -205,10 +238,6 @@ async function loadMovies() {
             button.addEventListener("click", () => displayPopup(movieId));
         cpt++;
     })
-    // document.querySelectorAll("button").forEach((button) => {
-    //     if (button.id !== "close-popup")
-    //         button.addEventListener("click", displayPopup);
-    // });
     initClosePopupEventListener();
 }
 

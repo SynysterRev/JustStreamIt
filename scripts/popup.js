@@ -1,16 +1,18 @@
 async function displayPopup(movieId){
-    let popup = document.querySelector(".popup-background");
-    popup.classList.add("flex");
+    let popup = document.querySelector("#popup-background");
+    popup.classList.toggle("hidden");
     let movie = await getMovie(movieId);
 
     popup.querySelector("#movie-title").innerText = movie["original_title"];
     popup.querySelector("#movie-description").innerText = movie["long_description"];
-    let image = popup.querySelector("img");
+    let images = popup.querySelectorAll("img");
+    images.forEach(image => {
     image.src = movie["image_url"];
     image.onerror = () => {
         image.src = "images/no-image.jpg";
     };
     image.src = movie["image_url"];
+    });
 
     let genresString = movie["genres"].toString();
     genresString = genresString.replaceAll(",", ", ");
@@ -36,11 +38,14 @@ async function displayPopup(movieId){
 }
 
 function hidePopup(){
-    let popup = document.querySelector(".popup-background");
-    popup.classList.remove("flex");
+    let popup = document.querySelector("#popup-background");
+    popup.classList.toggle("hidden");
 }
 
 function initClosePopupEventListener() {
-    let closeButton = document.querySelector("#close-popup");
-    closeButton.addEventListener("click", hidePopup);
+    let popup = document.querySelector("#popup-background");
+    let closeButtons = popup.querySelectorAll("button");
+    closeButtons.forEach(button => {
+        button.addEventListener("click", hidePopup);
+    });
 }
