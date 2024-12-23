@@ -44,7 +44,7 @@
         display: grid;
         grid-template-columns: repeat(1, auto);
         gap: 4rem;
-        justify-content: start;
+        justify-content: center;
     }
 
     .movie-grid .movie-container:nth-child(n+3) {
@@ -103,6 +103,7 @@
     @media (min-width: 640px) {
         .movie-grid {
             grid-template-columns: repeat(2, auto);
+            justify-content: start;
         }
 
         .movie-grid .movie-container:nth-child(-n+5) {

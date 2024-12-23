@@ -622,7 +622,7 @@ select {
   display: grid;
   grid-template-columns: repeat(1, auto);
   gap: 4rem;
-  justify-content: start;
+  justify-content: center;
 }
 
 .movie-grid .movie-container:nth-child(n+3) {
@@ -714,6 +714,7 @@ select {
 @media (min-width: 640px) {
   .movie-grid {
     grid-template-columns: repeat(2, auto);
+    justify-content: start;
   }
 
   .movie-grid .movie-container:nth-child(-n+5) {
@@ -967,6 +968,10 @@ select {
   padding-top: 0.25rem;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1029,6 +1034,14 @@ select {
     place-content: start;
   }
 
+  .sm\:justify-start {
+    justify-content: flex-start;
+  }
+
+  .sm\:self-start {
+    align-self: flex-start;
+  }
+
   .sm\:text-left {
     text-align: left;
   }
@@ -1041,10 +1054,6 @@ select {
 }
 
 @media (min-width: 1024px) {
-  .lg\:mt-0 {
-    margin-top: 0px;
-  }
-
   .lg\:block {
     display: block;
   }

@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustStreamIt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <link href="style/output.css" rel="stylesheet">
     <script src="scripts/script.js" defer></script>
     <script src="scripts/popup.js" defer></script>
-    <title>JustStreamIt</title>
 </head>
 <body class="sm:mx-24 mx-12">
 <header class="bg-[#61787f] flex flex-row place-content-center sm:place-content-start items-center mt-14">
-    <img src="images/title.png" alt="site logo"/>
+    <img src="images/title.png" alt="site logo">
     <h2 class="text-3xl text-white hidden sm:block">Vidéos à la demande</h2>
 </header>
 <main>
-    <section>
+    <div>
         <h1 class="sm:text-left text-center">Meilleur film</h1>
         <div id="best-movie" class="border-4 border-black p-4 flex sm:flex-row flex-col relative">
-            <img src=""
-                 alt="Best movie cover"/>
+            <img src="images/no-image.jpg"
+                 alt="Best movie cover">
             <div class="flex flex-col sm:ml-8">
-                <h1 class="pb-4 my-0"></h1>
-                <article>
-                </article>
+                <h1 class="pb-4 my-0">Titre</h1>
+                <p> Description
+                </p>
                 <button
                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-24 rounded-full sm:absolute
                         sm:bottom-4 sm:right-4 self-center mt-4"
@@ -29,36 +30,36 @@
                 </button>
             </div>
         </div>
-    </section>
-    <section id="mystery" class="flex flex-col">
-        <h1>Mystery</h1>
-        <div id="mystery-grid" class="movie-grid">
+    </div>
+    <div id="best-movies" class="flex flex-col">
+        <h1 class="text-center sm:text-left">Meilleurs films</h1>
+        <div id="best-grid" class="movie-grid">
         </div>
-    </section>
-    <section id="action" class="flex flex-col">
-        <h1>Action</h1>
+    </div>
+    <div id="action" class="flex flex-col">
+        <h1 class="text-center sm:text-left">Action</h1>
         <div id="action-grid" class="movie-grid">
         </div>
-    </section>
-    <section id="thriller" class="flex flex-col">
-        <h1>Thriller</h1>
+    </div>
+    <div id="thriller" class="flex flex-col">
+        <h1 class="text-center sm:text-left">Thriller</h1>
         <div id="thriller-grid" class="movie-grid">
         </div>
-    </section>
-    <section id="first-selection" class="flex flex-col mt-10">
-        <label for="movie-category-select">Autres:</label>
-        <select name="movie-category" id="movie-category-select" class="w-min">
+    </div>
+    <div id="first-selection" class="flex flex-col mt-10">
+        <label for="movie-category-select" class="text-center sm:text-left">Autres:</label>
+        <select name="movie-category" id="movie-category-select" class="w-min self-center sm:self-start">
         </select>
         <div class="movie-grid">
         </div>
-    </section>
-    <section id="second-selection" class="flex flex-col mt-10 mb-4">
-        <label for="movie-category-select2">Autres:</label>
-        <select name="movie-category2" id="movie-category-select2" class="w-min">
+    </div>
+    <div id="second-selection" class="flex flex-col mt-10 mb-4">
+        <label for="movie-category-select2" class="text-center sm:text-left">Autres:</label>
+        <select name="movie-category2" id="movie-category-select2" class="w-min self-center sm:self-start">
         </select>
         <div class="movie-grid">
         </div>
-    </section>
+    </div>
 </main>
 
 <div
@@ -68,7 +69,7 @@
          class="flex flex-col w-4/5 md:w-3/5 lg:w-2/5 h-4/5 lg:h-max lg:max-h-3/5 overflow-scroll lg:overflow-auto p-4 bg-white text-align-left border-4 border-black rounded-lg relative">
         <section class="flex flex-col lg:flex-row relative justify-between">
             <div id="movie-info" class="place-self-start">
-                <h2 id="movie-title" class="text-3xl lg:text-4xl font-bold pt-1"></h2>
+                <h2 id="movie-title" class="text-3xl lg:text-4xl font-bold pt-1">Titre</h2>
                 <p id="movie-date" class="font-bold text-lg"></p>
                 <p id="movie-pegi" class="font-bold text-lg"></p>
                 <p id="movie-score" class="font-bold text-lg"></p>
@@ -76,16 +77,16 @@
                 <p class="mt-4"><strong>Réalisé par: </strong></p>
                 <p id="movie-real"></p>
             </div>
-            <img src=""
+            <img src="images/no-image.jpg"
                  alt="movie cover" class="hidden lg:block">
         </section>
-        <section class="mt-6 items-center">
+        <div class="mt-6 items-center">
             <p id="movie-description"></p>
-            <img src=""
+            <img src="images/no-image.jpg"
                  alt="movie cover" class="block lg:hidden mt-6 place-self-center">
             <p class="mt-10"><strong>Avec:</strong></p>
             <p id="movie-actors"></p>
-        </section>
+        </div>
         <button
                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-32 rounded-full place-self-center mt-10 hidden lg:block">
             Fermer

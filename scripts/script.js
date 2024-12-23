@@ -20,6 +20,51 @@ async function getBestMovie() {
     }
 }
 
+async function getBestMovies() {
+    try {
+        let genreUrl = URL + "?sort_by=-imdb_score";
+        let allMovies = [];
+        const response = await fetch(genreUrl);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const movies = await response.json();
+        let ids = [];
+        for (let i = 0; i < movies["results"].length; i++) {
+            if (!movies["results"] || movies["results"].length === 0) {
+                throw new Error("No movies found.");
+            }
+            if (i > movies["results"].length) break;
+            ids.push(movies["results"][i]["id"]);
+        }
+
+        await Promise.all(ids.map(async (id) => {
+            let movie = await getMovie(id);
+            allMovies.push(movie);
+        }))
+
+        if (!movies["next"]) {
+            return allMovies;
+        }
+        const nextPageResponse = await fetch(movies["next"]);
+        if (!nextPageResponse.ok) {
+            throw new Error(`Response status: ${nextPageResponse.status}`);
+        }
+        const nextPage = await nextPageResponse.json();
+
+        if (!nextPage["results"] || nextPage["results"].length === 0) {
+            throw new Error("No movies found.");
+        }
+
+        const lastMovie = await getMovie(nextPage["results"][0]["id"]);
+        allMovies.push(lastMovie);
+        return allMovies;
+
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 async function getMovie(id) {
     try {
         const response = await fetch(URL + id);
@@ -141,6 +186,18 @@ async function displayMoviesByGenre(genre) {
     addMoreButton(buttonParent);
 }
 
+async function displayBestMovies() {
+    let movies = await getBestMovies();
+    let id = `#best-grid`;
+    let grid = document.querySelector(id);
+    movies.forEach((movie) => {
+        let movieDiv = createMovieDiv(movie);
+        grid.appendChild(movieDiv);
+    });
+    let buttonParent = document.querySelector("#best-movies");
+    addMoreButton(buttonParent);
+}
+
 function addMoreButton(parent) {
     let moreButton = document.createElement("button");
     moreButton.classList.add("button-more");
@@ -232,7 +289,7 @@ async function displayBestMovie() {
     image.onerror = () => {
         image.src = "images/no-image.jpg";
     }
-    movieDiv.querySelector("article").innerText = bestMovie["long_description"];
+    movieDiv.querySelector("p").innerText = bestMovie["long_description"];
     let button = movieDiv.querySelector("button");
     button.addEventListener("click", () => displayPopup(bestMovie["id"]));
 }
@@ -248,7 +305,7 @@ function displayMoreOrLessMovies(event) {
 
 async function loadMovies() {
     await displayBestMovie();
-    await displayMoviesByGenre("Mystery");
+    await displayBestMovies();
     await displayMoviesByGenre("Action");
     await displayMoviesByGenre("Thriller");
     await populateSelect();

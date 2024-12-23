@@ -33,7 +33,7 @@ async function displayPopup(movieId){
 
     let movieRevenue = popup.querySelector("#movie-revenue");
     let revenue = movie["worldwide_gross_income"];
-    movieRevenue.innerText = (revenue !== null) ? "Revenue : " + movie["worldwide_gross_income"] : "";
+    movieRevenue.innerText = (revenue !== null) ? "Revenue : " + movie["worldwide_gross_income"] + "$" : "";
 
     let movieReal = popup.querySelector("#movie-real");
     movieReal.innerText = movie["directors"].toString().replaceAll(",", ", ");
