@@ -604,7 +604,7 @@ select {
   color: white;
   top: 0;
   left: 0;
-  height: 30%;
+  height: 40%;
   width: 100%;
 }
 
@@ -1032,10 +1032,6 @@ select {
 
   .sm\:place-content-start {
     place-content: start;
-  }
-
-  .sm\:justify-start {
-    justify-content: flex-start;
   }
 
   .sm\:self-start {
